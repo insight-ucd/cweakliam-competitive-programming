@@ -1,0 +1,7 @@
+ST A
+ST X
+PH A
+PH X
+AD
+PL Y
+DI Y
