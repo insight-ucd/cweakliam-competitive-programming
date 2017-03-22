@@ -13,24 +13,24 @@ def dist(point1, point2):
 
 
 @memoize
-def tour_length(v1, v2, c):
-    last_visited_1 = locations[v1]
-    last_visited_2 = locations[v2]
+def tour_length(v, c):
+    last_visited_1 = locations[v]
+    last_visited_2 = locations[c - 1]
     current = locations[c]
     
     if c == len(locations) - 1:
         return dist(last_visited_1, current) + dist(last_visited_2, current)
 
     return min(
-            # make path between v1 and c
-            tour_length(v2, c, c + 1) + dist(last_visited_1, current),
-            # make path between v2 and c
-            tour_length(v1, c, c + 1) + dist(last_visited_2, current)
+            # make path between last_visited_1 and current
+            tour_length(c - 1, c + 1) + dist(last_visited_1, current),
+            # make path between last_visited_2 and current
+            tour_length(v, c + 1) + dist(last_visited_2, current)
             )
 
 
 def solve():
-    return tour_length(0, 0, 1)
+    return tour_length(0, 1)
 
 
 n_locations = int(input())
