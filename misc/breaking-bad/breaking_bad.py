@@ -4,6 +4,15 @@ sys.setrecursionlimit(101000)
 
 
 def read_input():
+    """Read in the input and return a graph representing suspicious pairs of
+    items, plus a list of all of the items (some of which may not be in the
+    graph).
+    
+    The graph is a dict mapping an item name to a dict of {'buyer': None,
+    'edges': [..]}, i.e. a slot for identifying who should buy the item, plus
+    a list of 'edges', which are any items that are suspicious if bought with
+    this one.
+    """
     n_items = int(raw_input())
     items = [raw_input() for _ in range(n_items)]
     n_pairs = int(raw_input())
@@ -32,8 +41,17 @@ def try_divide_subgraph(node, graph, buyer):
 
 
 def try_divide_graph(graph):
+    """Divide the items in the graph into items bought by Walter and items
+    bought by Jesse. Mark the 'buyer' tag on each node with the name of the
+    chosen buyer.
+
+    Return False if the graph could not be divided without assigning
+    a 'suspicious pair' to the same buyer. Return True otherwise.
+    """
     for node in graph.values():
-        if not node['buyer']:
+        # only check if the buyer tag has not been filled. If it has, then it
+        # means we've already checked the whole sub-graph containing this node
+        if not node['buyer']: 
             if not try_divide_subgraph(node, graph, 'walter'):
                 return False
     return True
